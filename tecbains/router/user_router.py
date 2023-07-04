@@ -4,9 +4,9 @@ from ..get_db import get_db
 from ..db.sqlite.schemas.user_schema import UserSchema, UserSchemaUpdate
 from sqlalchemy.orm import Session
 
-router = APIRouter()
+userRouter = APIRouter()
 
-@router.post("/create", tags=["user"], summary="Create User")
+@userRouter.post("/create", tags=["user"], summary="Create User")
 def create(user: UserSchema, db: Session = Depends(get_db)):
         
         userCase = UserUseCase(db)
@@ -18,7 +18,7 @@ def create(user: UserSchema, db: Session = Depends(get_db)):
         
         return user
 
-@router.post("/signup", tags=["user"], summary="Sign Up")
+@userRouter.post("/signup", tags=["user"], summary="Sign Up")
 def signup(email: str, password: str, username: str, db: Session = Depends(get_db)):
     
     userCase = UserUseCase(db)
@@ -30,7 +30,7 @@ def signup(email: str, password: str, username: str, db: Session = Depends(get_d
     
     return user
 
-@router.post("/login", tags=["user"], summary="Login")
+@userRouter.post("/login", tags=["user"], summary="Login")
 def login(email: str, password: str, db: Session = Depends(get_db)):
     
     loginCase = UserUseCase(db)
@@ -42,7 +42,7 @@ def login(email: str, password: str, db: Session = Depends(get_db)):
 
     return {"token": token, "token_type": "bearer"}
 
-@router.get("/listAll", tags=["user"], summary="List All Users")
+@userRouter.get("/listAll", tags=["user"], summary="List All Users")
 def getAllUsers(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     
     userCase = UserUseCase(db)
@@ -52,7 +52,7 @@ def getAllUsers(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     
     return users
 
-@router.get("/list/{id}", tags=["user"], summary="List User By Id")
+@userRouter.get("/list/{id}", tags=["user"], summary="List User By Id")
 def getOneUser(db: Session = Depends(get_db), id: int = 0):
     
     userCase = UserUseCase(db)
@@ -64,7 +64,7 @@ def getOneUser(db: Session = Depends(get_db), id: int = 0):
     
     return user
 
-@router.put("/update/{id}", tags=["user"], summary="Update User")
+@userRouter.put("/update/{id}", tags=["user"], summary="Update User")
 def update(id: int, user: UserSchemaUpdate, db: Session = Depends(get_db)):
     
     userCase = UserUseCase(db)
@@ -76,7 +76,7 @@ def update(id: int, user: UserSchemaUpdate, db: Session = Depends(get_db)):
     
     return user
 
-@router.delete("/delete/{id}", tags=["user"], summary="Delete user")
+@userRouter.delete("/delete/{id}", tags=["user"], summary="Delete user")
 def delete(id: int, db: Session = Depends(get_db)):
     
     userCase = UserUseCase(db)
