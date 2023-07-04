@@ -1,5 +1,6 @@
 from pydantic import Field, BaseModel, EmailStr
 from typing import List, Optional
+from .post_schema import PostSchema
 
 
 class UserSchema(BaseModel):
@@ -7,6 +8,7 @@ class UserSchema(BaseModel):
     email: EmailStr
     password: str
     is_superuser: bool = False
+    posts: List[PostSchema] = []
 
     class Config:
         schema_extra = {

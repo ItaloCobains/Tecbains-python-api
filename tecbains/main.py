@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from tecbains.router.user_router import userRouter
+from tecbains.router.post_router import postRouter
 from .auth.auth_bearer import JWTBearer
 
 
@@ -18,6 +19,7 @@ app.add_middleware(
 
 
 app.include_router(userRouter, prefix="/user", tags=["user"])
+app.include_router(postRouter, prefix="/post", tags=["post"])
 
 
 @app.get("/", dependencies=[Depends(JWTBearer())], tags=["root"])
