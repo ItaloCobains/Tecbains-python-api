@@ -1,28 +1,32 @@
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from tecbains.router.user_router import userRouter
-from tecbains.router.post_router import postRouter
-from .auth.auth_bearer import JWTBearer
-
+from tecbains.routes import (
+    sign_up
+)
+from tecbains.dependencies.models import (DeclarativeBase)
+from tecbains.dependencies.database import (
+    engine
+)
 
 load_dotenv()
 
-app = FastAPI()
+DeclarativeBase.metadata.create_all(bind=engine)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+app = FastAPI(
+    title="Tecbains API",
+    version="1.0.0",
+    description="API for Tecbains",
 )
 
+app.add_middleware(
+    CORSMiddleware, 
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
-app.include_router(userRouter, prefix="/user", tags=["user"])
-app.include_router(postRouter, prefix="/post", tags=["post"])
+app.include_router(sign_up.router)
 
-
-@app.get("/", dependencies=[Depends(JWTBearer())], tags=["root"])
-async def root(token: str = Depends(JWTBearer())):
-    return {"message": token}
 
