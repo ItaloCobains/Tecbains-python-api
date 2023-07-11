@@ -2,7 +2,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from tecbains.routes import (
-    sign_up
+    sign_up,
+    auth
 )
 from tecbains.dependencies.models import (DeclarativeBase)
 from tecbains.dependencies.database import (
@@ -28,5 +29,5 @@ app.add_middleware(
 )
 
 app.include_router(sign_up.router)
-
+app.include_router(auth.router)
 
